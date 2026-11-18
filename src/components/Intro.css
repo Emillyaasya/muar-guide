@@ -1,0 +1,124 @@
+/* ---------- Intro splash (shown on first open) ---------- */
+.intro {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  display: grid;
+  place-items: center;
+  color: #f2e8d5;
+  cursor: pointer;
+  opacity: 1;
+  transition: opacity 0.8s ease;
+}
+/* Fade the whole intro out to reveal the site */
+.intro.is-open { opacity: 0; pointer-events: none; }
+
+/* Solid background behind the text */
+.intro-panel {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 50.2%;
+  background: #0f3b3a;
+}
+.intro-panel-left  { left: 0; }
+.intro-panel-right { right: 0; }
+
+.intro-content {
+  position: relative;
+  text-align: center;
+  padding: 0 1.5rem;
+}
+
+.intro-welcome {
+  margin: 0 0 0.5rem;
+  font-size: clamp(0.95rem, 2.2vw, 1.25rem);
+  letter-spacing: 0.3em;
+  opacity: 0;
+  animation: intro-fade 0.8s 0.1s ease forwards;
+}
+
+/* Big word: each letter rises out of its own mask */
+.intro-title {
+  margin: 0;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-weight: 700;
+  font-size: clamp(4.5rem, 20vw, 13rem);
+  line-height: 1;
+  letter-spacing: 0.04em;
+  display: flex;
+  justify-content: center;
+}
+.intro-mask {
+  display: inline-block;
+  overflow: hidden;
+  padding: 0 0.02em;
+}
+.intro-letter {
+  display: inline-block;
+  transform: translateY(110%);
+  animation: intro-rise 0.9s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+  animation-delay: calc(0.3s + var(--i) * 0.13s);
+}
+
+/* The river line draws itself under the word */
+.intro-river {
+  display: block;
+  width: min(70vw, 420px);
+  height: 26px;
+  margin: 0.6rem auto 0.9rem;
+  overflow: visible;
+}
+.intro-river path {
+  fill: none;
+  stroke: #d9a441;
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: intro-draw 1.8s 0.6s ease-in-out forwards;
+}
+
+.intro-tagline {
+  margin: 0;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-style: italic;
+  font-size: clamp(1.1rem, 3vw, 1.6rem);
+  color: #d9a441;
+  opacity: 0;
+  animation: intro-fade 0.9s 1.7s ease forwards;
+}
+
+.intro-skip {
+  position: absolute;
+  bottom: 1.75rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background: transparent;
+  color: #f2e8d5;
+  border: 1px solid rgba(242, 232, 213, 0.45);
+  border-radius: 999px;
+  padding: 0.5rem 1.25rem;
+  font-size: 0.9rem;
+  cursor: pointer;
+  opacity: 0;
+  animation: intro-fade 0.6s 1s ease forwards;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+.intro-skip:hover { background: rgba(242, 232, 213, 0.12); border-color: #f2e8d5; }
+.intro-skip:focus-visible { outline: 2px solid #d9a441; outline-offset: 3px; }
+
+@keyframes intro-rise { to { transform: translateY(0); } }
+@keyframes intro-fade { to { opacity: 1; } }
+@keyframes intro-draw { to { stroke-dashoffset: 0; } }
+
+/* Respect people who turn animations off: show the final state straight away */
+@media (prefers-reduced-motion: reduce) {
+  .intro-letter, .intro-welcome, .intro-tagline, .intro-skip {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+  .intro-river path { animation: none; stroke-dashoffset: 0; }
+  .intro { transition-duration: 0.01s; }
+}
